@@ -15,7 +15,7 @@ internal class TypeCommand(Dictionary<string, IBuiltinCommand> builtinCommandsMa
             var programPath = executableDirectories.GetProgramPath(programName);
             if (programPath != null)
             {
-                System.Console.WriteLine($"{programName} is {programPath} builtin");
+                System.Console.WriteLine($"{programName} is {programPath}");
             }
             else
             {
