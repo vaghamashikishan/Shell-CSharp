@@ -38,8 +38,8 @@ while (run)
             continue;
         }
 
+        // executing external programs
         var programPath = executableDirectories.GetProgramPath(command);
-        System.Console.WriteLine($"program path: {command} {programPath}");
         if (programPath != null)
         {
             var processStartInfo = new ProcessStartInfo(command, parameters.Skip(1))

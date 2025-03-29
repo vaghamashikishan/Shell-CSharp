@@ -118,7 +118,7 @@ class CommandLineParser
         {
             return;
         }
-        tokens.Add(currentToken.ToString() ?? "");
+        tokens.Add(new string([.. currentToken]));
         currentToken = [];
     }
 }
