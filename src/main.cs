@@ -7,7 +7,8 @@ var builtinCommands = new List<IBuiltinCommand>()
 {
     new EchoCommand(),
     new TypeCommand(builtinCommandsMap, executableDirectories),
-    new ExitCommand()
+    new ExitCommand(),
+    new PwdCommand()
 };
 
 foreach (var command in builtinCommands)
