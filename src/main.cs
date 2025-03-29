@@ -1,3 +1,6 @@
+using System.Diagnostics;
+
+var parser = new CommandLineParser();
 var executableDirectories = new ExecutableDirectories(Environment.GetEnvironmentVariable("PATH") ?? "");
 var builtinCommandsMap = new Dictionary<string, IBuiltinCommand>();
 var builtinCommands = new List<IBuiltinCommand>()
@@ -17,30 +20,63 @@ while (run)
 {
     Console.Write("$ ");
     var userInput = Console.ReadLine() ?? string.Empty;
-    // parse the input here, till then
-    var parameters = userInput.Split(" ");
-    // derive command from parsed input, till then do work on
-    var command = userInput.Split(" ")[0];
+    var parameters = parser.Parse(userInput).ToArray();
+    var command = parameters.FirstOrDefault("");
 
     if (userInput != null)
     {
+        // executing EXIT command
         if (command == ExitCommand.CommandName)
         {
             return builtinCommandsMap[command].Execute(parameters);
         }
 
+        // executing BUILT-IN command
         if (builtinCommandsMap.TryGetValue(command, out var builtinCommand) == true)
         {
             builtinCommand.Execute(parameters);
             continue;
         }
+
+        var programPath = executableDirectories.GetProgramPath(command);
+        if (programPath != null)
+        {
+            var processStartInfo = new ProcessStartInfo(command, parameters.Skip(1))
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = new Process();
+            process.StartInfo = processStartInfo;
+            process.OutputDataReceived += (sender, args) =>
+            {
+                if (args.Data != null)
+                {
+                    Console.WriteLine(args.Data);
+                }
+            };
+
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                if (args.Data != null)
+                {
+                    Console.Error.WriteLine(args.Data);
+                }
+            };
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            await process.WaitForExitAsync();
+            continue;
+        }
+
+        Console.WriteLine($"{userInput}: command not found");
     }
-    Console.WriteLine($"{userInput}: command not found");
 }
 
 return 0;
-
-
-// jo command 'type' hoi to
-// -> to typeCommand class ne execute karvano
-// --> --> tema check karvanu k inbuilt 6e k p6i environment variable 6e 
