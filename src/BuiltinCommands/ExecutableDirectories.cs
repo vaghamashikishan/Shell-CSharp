@@ -1,7 +1,7 @@
 internal class ExecutableDirectories(string pathVariableContent)
 {
     private readonly string[] sourcePaths = pathVariableContent
-                                        .Split(':', ';', StringSplitOptions.RemoveEmptyEntries)
+                                        .Split([':', ';'], StringSplitOptions.RemoveEmptyEntries)
                                         .Where(Directory.Exists)
                                         .ToArray();
 
