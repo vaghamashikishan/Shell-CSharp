@@ -5,6 +5,12 @@ internal class CdCommand : IBuiltinCommand
     public int Execute(string[] args)
     {
         var path = args[1];
+        if (path == "~")
+        {
+            var homeDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            Directory.SetCurrentDirectory(homeDir);
+            return 0;
+        }
 
         if (Directory.Exists(path))
         {
