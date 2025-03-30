@@ -65,6 +65,7 @@ while (run)
                     resultText += args.Data + '\n';
                 }
             };
+            resultText.Remove(resultText.Length - 1);
 
             process.ErrorDataReceived += (sender, args) =>
             {
