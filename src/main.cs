@@ -22,7 +22,7 @@ while (run)
 {
     Console.Write("$ ");
     var userInput = Console.ReadLine() ?? string.Empty;
-    var (parameters, isRedirectionExists, redirectionIndex) = parser.Parse(userInput);
+    var (parameters, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection) = parser.Parse(userInput);
     var command = parameters.FirstOrDefault("");
 
     if (userInput != null)
@@ -63,11 +63,10 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    if (isRedirectionExists)
+                    if (isOutputRedirection)
                     {
                         if (resultText.Length > 0) resultText += "\n";
                         resultText += args.Data;
-
                     }
                     else
                     {
@@ -80,7 +79,15 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    System.Console.WriteLine(args.Data);
+                    if (isErrorRedirection)
+                    {
+                        if (resultText.Length > 0) resultText += "\n";
+                        resultText += args.Data;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine(args.Data);
+                    }
                 }
             };
 

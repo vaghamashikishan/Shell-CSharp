@@ -2,7 +2,7 @@ internal class TypeCommand(Dictionary<string, IBuiltinCommand> builtinCommandsMa
 {
     public string Name { get; } = "type";
 
-    public int Execute(string[] args, bool isRedirectionExists, int redirectionIndex)
+    public int Execute(string[] args, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection)
     {
         foreach (var programName in args.Skip(1))
         {

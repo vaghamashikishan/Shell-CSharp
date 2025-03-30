@@ -2,7 +2,7 @@ internal class CdCommand : IBuiltinCommand
 {
     public string Name { get; } = "cd";
 
-    public int Execute(string[] args, bool isRedirectionExists, int redirectionIndex)
+    public int Execute(string[] args, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection)
     {
         var path = args[1];
         if (path == "~")

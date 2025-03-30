@@ -8,9 +8,11 @@ class CommandLineParser
     private IList<char> currentToken;
     private int index = 0;
     private bool isRedirectionExists = false;
+    private bool isOutputRedirection = false;
+    private bool isErrorRedirection = false;
     private int redirectionIndex = -1;
 
-    public (IEnumerable<string> parameters, bool isRedirectionExists, int redirectionIndex) Parse(string userInput)
+    public (IEnumerable<string> parameters, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection) Parse(string userInput)
     {
         currentToken = [];
         tokens = [];
@@ -24,7 +26,7 @@ class CommandLineParser
         }
         AddCurrentToken();
 
-        return (tokens, isRedirectionExists, redirectionIndex);
+        return (tokens, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection);
     }
 
     private void StartParsing(char ch)
@@ -133,6 +135,13 @@ class CommandLineParser
         if (str == ">" || str == "1>")
         {
             isRedirectionExists = true;
+            isOutputRedirection = true;
+            redirectionIndex = tokens.Count;
+        }
+        else if (str == "2>")
+        {
+            isRedirectionExists = true;
+            isErrorRedirection = true;
             redirectionIndex = tokens.Count;
         }
     }
