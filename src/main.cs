@@ -64,7 +64,7 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    if (isOutputRedirection)
+                    if (isRedirectionExists && isOutputRedirection)
                     {
                         if (resultText.Length > 0) resultText += "\n";
                         resultText += args.Data;
@@ -80,7 +80,7 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    if (isErrorRedirection)
+                    if (isRedirectionExists && isErrorRedirection)
                     {
                         if (errorText.Length > 0) errorText += "\n";
                         errorText += args.Data;
@@ -101,7 +101,7 @@ while (run)
             if (isRedirectionExists)
             {
                 var str = isErrorRedirection ? errorText : resultText;
-                if (!isErrorRedirection) System.Console.WriteLine($"it is -> {str}");
+                // if (!isErrorRedirection) System.Console.WriteLine($"it is -> {str}");
                 var redirectOutput = new RedirectOutput();
                 redirectOutput.Execute([str.Trim()], redirectionIndex, parameters.ToArray());
             }
