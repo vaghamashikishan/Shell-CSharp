@@ -70,7 +70,7 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    errorText += args.Data;
+                    System.Console.WriteLine(args.Data);
                 }
             };
 
