@@ -53,7 +53,7 @@ while (run)
                 CreateNoWindow = true
             };
 
-            string[] resultText = [];
+            var resultText = "";
             var errorText = "";
             using var process = new Process();
             process.StartInfo = processStartInfo;
@@ -61,7 +61,7 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    resultText.Append(args.Data);
+                    resultText += args.Data;
                 }
             };
 
@@ -82,7 +82,8 @@ while (run)
             if (isRedirectionExists)
             {
                 var redirectOutput = new RedirectOutput();
-                redirectOutput.Execute([string.Join(" ", resultText)], redirectionIndex, parameters.ToArray());
+                System.Console.WriteLine($"{resultText.Remove(resultText.Length - 1)}");
+                redirectOutput.Execute([resultText.Remove(resultText.Length - 1)], redirectionIndex, parameters.ToArray());
             }
             else
             {
