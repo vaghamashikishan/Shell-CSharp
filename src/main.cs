@@ -101,7 +101,7 @@ while (run)
             if (isRedirectionExists)
             {
                 var str = isErrorRedirection ? errorText : resultText;
-                System.Console.WriteLine($"it is -> {str}");
+                if (!isErrorRedirection) System.Console.WriteLine($"it is -> {str}");
                 var redirectOutput = new RedirectOutput();
                 redirectOutput.Execute([str.Trim()], redirectionIndex, parameters.ToArray());
             }
