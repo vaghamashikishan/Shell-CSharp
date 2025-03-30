@@ -36,7 +36,7 @@ while (run)
         // executing BUILT-IN command
         if (builtinCommandsMap.TryGetValue(command, out var builtinCommand) == true)
         {
-            builtinCommand.Execute(parameters.ToArray(), isRedirectionExists, redirectionIndex);
+            builtinCommand.Execute(parameters.ToArray(), isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection);
             continue;
         }
 
