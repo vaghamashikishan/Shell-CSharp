@@ -22,7 +22,8 @@ while (run)
 {
     Console.Write("$ ");
     var userInput = Console.ReadLine() ?? string.Empty;
-    var (parameters, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection) = parser.Parse(userInput);
+    var (parameters, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection, isRedirectionAppend) = parser.Parse(userInput);
+    System.Console.WriteLine($"{isRedirectionExists} {redirectionIndex} {isOutputRedirection} {isErrorRedirection} {isRedirectionAppend}");
     var command = parameters.FirstOrDefault("");
 
     if (userInput != null)
@@ -36,7 +37,7 @@ while (run)
         // executing BUILT-IN command
         if (builtinCommandsMap.TryGetValue(command, out var builtinCommand) == true)
         {
-            builtinCommand.Execute(parameters.ToArray(), isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection);
+            builtinCommand.Execute(parameters.ToArray(), isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection, isRedirectionAppend);
             continue;
         }
 
@@ -103,7 +104,7 @@ while (run)
                 var str = isErrorRedirection ? errorText : resultText;
                 // if (!isErrorRedirection) System.Console.WriteLine($"it is -> {str}");
                 var redirectOutput = new RedirectOutput();
-                redirectOutput.Execute([str.Trim()], redirectionIndex, parameters.ToArray());
+                redirectOutput.Execute([str.Trim()], redirectionIndex, parameters.ToArray(), isRedirectionAppend);
             }
             continue;
         }

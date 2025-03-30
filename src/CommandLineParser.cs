@@ -10,15 +10,19 @@ class CommandLineParser
     private bool isRedirectionExists = false;
     private bool isOutputRedirection = false;
     private bool isErrorRedirection = false;
+    private bool isRedirectionAppend = false;
     private int redirectionIndex = -1;
 
-    public (IEnumerable<string> parameters, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection) Parse(string userInput)
+    public (IEnumerable<string> parameters, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection, bool isRedirectionAppend) Parse(string userInput)
     {
         currentToken = [];
         tokens = [];
         parseMode = StartParsing;
         index = 0;
         isRedirectionExists = false;
+        isOutputRedirection = false;
+        isErrorRedirection = false;
+        isRedirectionAppend = false;
 
         while (index < userInput.Length)
         {
@@ -26,7 +30,7 @@ class CommandLineParser
         }
         AddCurrentToken();
 
-        return (tokens, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection);
+        return (tokens, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection, isRedirectionAppend);
     }
 
     private void StartParsing(char ch)
@@ -132,17 +136,22 @@ class CommandLineParser
         tokens.Add(str);
         currentToken = [];
 
-        if (str == ">" || str == "1>")
+        if (str == ">" || str == "1>" || str == "1>>")
         {
             isRedirectionExists = true;
             isOutputRedirection = true;
             redirectionIndex = tokens.Count;
         }
-        else if (str == "2>")
+        else if (str == "2>" || str == "2>>")
         {
             isRedirectionExists = true;
             isErrorRedirection = true;
             redirectionIndex = tokens.Count;
+        }
+
+        if (str == ">>" || str == "1>>" || str == "2>>")
+        {
+            isRedirectionAppend = true;
         }
     }
 }

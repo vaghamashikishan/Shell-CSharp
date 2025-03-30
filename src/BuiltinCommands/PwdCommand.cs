@@ -2,7 +2,7 @@ internal class PwdCommand : IBuiltinCommand
 {
     public string Name { get; } = "pwd";
 
-    public int Execute(string[] args, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection)
+    public int Execute(string[] args, bool isRedirectionExists, int redirectionIndex, bool isOutputRedirection, bool isErrorRedirection, bool isRedirectionAppend)
     {
         if (args.Length == 1)
         {
