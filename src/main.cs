@@ -88,7 +88,6 @@ while (run)
             else
             {
                 System.Console.WriteLine(resultText.Trim());
-                System.Console.WriteLine();
             }
             continue;
         }
