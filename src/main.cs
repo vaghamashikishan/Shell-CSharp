@@ -71,8 +71,8 @@ while (run)
                 if (args.Data != null)
                 {
                     errorText += args.Data;
+                    isErrorOccured = true;
                 }
-                isErrorOccured = true;
             };
 
             process.Start();
