@@ -53,16 +53,15 @@ while (run)
                 CreateNoWindow = true
             };
 
-            var resultText = "";
+            string[] resultText = [];
             var errorText = "";
-            var isErrorOccured = false;
             using var process = new Process();
             process.StartInfo = processStartInfo;
             process.OutputDataReceived += (sender, args) =>
             {
                 if (args.Data != null)
                 {
-                    resultText += args.Data + '\n';
+                    resultText.Append(args.Data);
                 }
             };
 
@@ -71,7 +70,6 @@ while (run)
                 if (args.Data != null)
                 {
                     errorText += args.Data;
-                    isErrorOccured = true;
                 }
             };
 
@@ -81,14 +79,10 @@ while (run)
 
             await process.WaitForExitAsync();
 
-            if (isErrorOccured)
-            {
-                System.Console.WriteLine(errorText);
-            }
-            else if (isRedirectionExists)
+            if (isRedirectionExists)
             {
                 var redirectOutput = new RedirectOutput();
-                redirectOutput.Execute([resultText.Remove(resultText.Length - 1)], redirectionIndex, parameters.ToArray());
+                redirectOutput.Execute([string.Join(" ", resultText)], redirectionIndex, parameters.ToArray());
             }
             else
             {
