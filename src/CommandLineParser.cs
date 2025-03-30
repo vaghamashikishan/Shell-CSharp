@@ -136,7 +136,7 @@ class CommandLineParser
         tokens.Add(str);
         currentToken = [];
 
-        if (str == ">" || str == "1>" || str == "1>>")
+        if (str == ">" || str == ">>" || str == "1>" || str == "1>>")
         {
             isRedirectionExists = true;
             isOutputRedirection = true;
