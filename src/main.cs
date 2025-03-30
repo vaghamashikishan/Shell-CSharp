@@ -61,7 +61,7 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    resultText += args.Data;
+                    resultText += args.Data + "\n";
                 }
             };
 
