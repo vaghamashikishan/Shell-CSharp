@@ -4,6 +4,12 @@ class RedirectOutput
     {
         var output = string.Join(" ", input);
         var fileLocation = args[redirectionIndex];
+        var fileInfo = new FileInfo(fileLocation);
+        if (fileInfo.Length > 0)
+        {
+            output = "\n" + output;
+        }
+
         if (isRedirectionAppend)
         {
             File.AppendAllText(fileLocation, output);
