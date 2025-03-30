@@ -42,9 +42,9 @@ while (run)
 
         // executing external programs
         var programPath = executableDirectories.GetProgramPath(command);
-        // var newParameters = parameters;
-        // if (isRedirectionExists)
-        var newParameters = parameters.Skip(1).Take(redirectionIndex - 2).ToArray();
+        var newParameters = redirectionIndex > 1
+            ? parameters.Skip(1).Take(redirectionIndex - 2).ToArray()
+            : parameters.Skip(1).ToArray();
 
         if (programPath != null)
         {
