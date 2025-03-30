@@ -61,7 +61,8 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    resultText += args.Data + "\n";
+                    if (resultText.Length > 0) resultText += "\n";
+                    resultText += args.Data;
                 }
             };
 
@@ -82,12 +83,11 @@ while (run)
             if (isRedirectionExists)
             {
                 var redirectOutput = new RedirectOutput();
-                // System.Console.WriteLine($"{resultText}");
-                redirectOutput.Execute([resultText], redirectionIndex, parameters.ToArray());
+                redirectOutput.Execute([resultText.Trim()], redirectionIndex, parameters.ToArray());
             }
             else
             {
-                System.Console.WriteLine(resultText);
+                System.Console.WriteLine(resultText.Trim());
                 System.Console.WriteLine();
             }
             continue;
