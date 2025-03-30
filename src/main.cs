@@ -42,9 +42,10 @@ while (run)
 
         // executing external programs
         var programPath = executableDirectories.GetProgramPath(command);
+        var newParameters = parameters.Skip(1).Take(redirectionIndex - 2).ToArray();
         if (programPath != null)
         {
-            var processStartInfo = new ProcessStartInfo(command, parameters.Skip(1))
+            var processStartInfo = new ProcessStartInfo(command, newParameters)
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
