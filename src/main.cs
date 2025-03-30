@@ -65,7 +65,6 @@ while (run)
                     resultText += args.Data + '\n';
                 }
             };
-            resultText.Remove(resultText.Length - 1);
 
             process.ErrorDataReceived += (sender, args) =>
             {
@@ -89,7 +88,7 @@ while (run)
             else if (isRedirectionExists)
             {
                 var redirectOutput = new RedirectOutput();
-                redirectOutput.Execute([resultText], redirectionIndex, parameters.ToArray());
+                redirectOutput.Execute([resultText.Remove(resultText.Length - 1)], redirectionIndex, parameters.ToArray());
             }
             else
             {
