@@ -16,6 +16,7 @@ public class EchoCommand : IBuiltinCommand
         else
         {
             System.Console.WriteLine(output);
+
             if (isErrorRedirection)
             {
                 var redirectOutput = new RedirectOutput();

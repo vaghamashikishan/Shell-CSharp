@@ -23,7 +23,6 @@ while (run)
     Console.Write("$ ");
     var userInput = Console.ReadLine() ?? string.Empty;
     var (parameters, isRedirectionExists, redirectionIndex, isOutputRedirection, isErrorRedirection, isRedirectionAppend) = parser.Parse(userInput);
-    System.Console.WriteLine($"{isRedirectionExists} {redirectionIndex} {isOutputRedirection} {isErrorRedirection} {isRedirectionAppend}");
     var command = parameters.FirstOrDefault("");
 
     if (userInput != null)
