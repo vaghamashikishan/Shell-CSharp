@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.Marshalling;
+
 class CommandLineParser
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
@@ -5,20 +7,24 @@ class CommandLineParser
     private IList<string> tokens;
     private IList<char> currentToken;
     private int index = 0;
+    private bool isRedirectionExists = false;
+    private int redirectionIndex = -1;
 
-    public IEnumerable<string> Parse(string userInput)
+    public (IEnumerable<string> parameters, bool isRedirectionExists, int redirectionIndex) Parse(string userInput)
     {
         currentToken = [];
         tokens = [];
         parseMode = StartParsing;
         index = 0;
+        isRedirectionExists = false;
 
         while (index < userInput.Length)
         {
             parseMode(userInput[index]);
         }
         AddCurrentToken();
-        return tokens;
+
+        return (tokens, isRedirectionExists, redirectionIndex);
     }
 
     private void StartParsing(char ch)
@@ -118,7 +124,16 @@ class CommandLineParser
         {
             return;
         }
-        tokens.Add(new string([.. currentToken]));
+
+        var str = new string([.. currentToken]);
+
+        tokens.Add(str);
         currentToken = [];
+
+        if (str == ">" || str == "1>")
+        {
+            isRedirectionExists = true;
+            redirectionIndex = tokens.Count;
+        }
     }
 }

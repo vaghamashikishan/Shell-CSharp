@@ -22,7 +22,7 @@ while (run)
 {
     Console.Write("$ ");
     var userInput = Console.ReadLine() ?? string.Empty;
-    var parameters = parser.Parse(userInput).ToArray();
+    var (parameters, isRedirectionExists, redirectionIndex) = parser.Parse(userInput);
     var command = parameters.FirstOrDefault("");
 
     if (userInput != null)
@@ -30,13 +30,13 @@ while (run)
         // executing EXIT command
         if (command == ExitCommand.CommandName)
         {
-            return builtinCommandsMap[command].Execute(parameters);
+            return builtinCommandsMap[command].Execute(parameters.ToArray());
         }
 
         // executing BUILT-IN command
         if (builtinCommandsMap.TryGetValue(command, out var builtinCommand) == true)
         {
-            builtinCommand.Execute(parameters);
+            builtinCommand.Execute(parameters.ToArray(), isRedirectionExists, redirectionIndex);
             continue;
         }
 
@@ -52,13 +52,16 @@ while (run)
                 CreateNoWindow = true
             };
 
+            var resultText = "";
+            var errorText = "";
+            var isErrorOccured = false;
             using var process = new Process();
             process.StartInfo = processStartInfo;
             process.OutputDataReceived += (sender, args) =>
             {
                 if (args.Data != null)
                 {
-                    Console.WriteLine(args.Data);
+                    resultText += args.Data;
                 }
             };
 
@@ -66,8 +69,9 @@ while (run)
             {
                 if (args.Data != null)
                 {
-                    Console.Error.WriteLine(args.Data);
+                    errorText += args.Data;
                 }
+                isErrorOccured = true;
             };
 
             process.Start();
@@ -75,6 +79,20 @@ while (run)
             process.BeginErrorReadLine();
 
             await process.WaitForExitAsync();
+
+            if (isErrorOccured)
+            {
+                System.Console.WriteLine(errorText);
+            }
+            else if (isRedirectionExists)
+            {
+                var redirectOutput = new RedirectOutput();
+                redirectOutput.Execute([resultText], redirectionIndex, parameters.ToArray());
+            }
+            else
+            {
+                System.Console.WriteLine(resultText);
+            }
             continue;
         }
 
