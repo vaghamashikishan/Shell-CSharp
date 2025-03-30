@@ -42,10 +42,13 @@ while (run)
 
         // executing external programs
         var programPath = executableDirectories.GetProgramPath(command);
-        var newParameters = parameters.Skip(1).Take(redirectionIndex - 2).ToArray();
+        var newParameters = parameters;
+        if (isRedirectionExists)
+            newParameters = parameters.Take(redirectionIndex - 2).ToArray();
+
         if (programPath != null)
         {
-            var processStartInfo = new ProcessStartInfo(command, newParameters)
+            var processStartInfo = new ProcessStartInfo(command, newParameters.Skip(1))
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -54,15 +57,22 @@ while (run)
             };
 
             var resultText = "";
-            var errorText = "";
             using var process = new Process();
             process.StartInfo = processStartInfo;
             process.OutputDataReceived += (sender, args) =>
             {
                 if (args.Data != null)
                 {
-                    if (resultText.Length > 0) resultText += "\n";
-                    resultText += args.Data;
+                    if (isRedirectionExists)
+                    {
+                        if (resultText.Length > 0) resultText += "\n";
+                        resultText += args.Data;
+
+                    }
+                    else
+                    {
+                        System.Console.WriteLine(args.Data);
+                    }
                 }
             };
 
@@ -84,10 +94,6 @@ while (run)
             {
                 var redirectOutput = new RedirectOutput();
                 redirectOutput.Execute([resultText.Trim()], redirectionIndex, parameters.ToArray());
-            }
-            else
-            {
-                System.Console.WriteLine(resultText.Trim());
             }
             continue;
         }
