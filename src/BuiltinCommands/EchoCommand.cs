@@ -17,6 +17,12 @@ public class EchoCommand : IBuiltinCommand
         {
             System.Console.WriteLine(output);
         }
+
+        if (isErrorRedirection)
+        {
+            var redirectOutput = new RedirectOutput();
+            redirectOutput.Execute([""], redirectionIndex, args);
+        }
         return 0;
     }
 }
