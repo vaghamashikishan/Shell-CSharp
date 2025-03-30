@@ -82,8 +82,8 @@ while (run)
             if (isRedirectionExists)
             {
                 var redirectOutput = new RedirectOutput();
-                System.Console.WriteLine($"{resultText.Remove(resultText.Length - 1)}");
-                redirectOutput.Execute([resultText.Remove(resultText.Length - 1)], redirectionIndex, parameters.ToArray());
+                // System.Console.WriteLine($"{resultText}");
+                redirectOutput.Execute([resultText], redirectionIndex, parameters.ToArray());
             }
             else
             {
