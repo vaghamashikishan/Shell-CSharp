@@ -5,7 +5,7 @@ class RedirectOutput
         var output = string.Join(" ", input);
         var fileLocation = args[redirectionIndex];
         var fileInfo = new FileInfo(fileLocation);
-        if (fileInfo.Length > 0)
+        if (File.Exists(fileLocation) && fileInfo.Length > 0)
         {
             output = "\n" + output;
         }
